@@ -16,7 +16,16 @@ const createUser = async(data) =>{
 
 }
 
+const getUser = async(email, password) =>{
+    const query = "SELECT * FROM users WHERE email=$1 AND password=$2";
+    const values = [email, password];
+    const { rows } = await pool.query(query, values);
+    return rows[0];
+}
+
+
 module.exports = {
     findUser,
     createUser,
+    getUser,
 }
