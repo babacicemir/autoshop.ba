@@ -36,7 +36,7 @@ const login = async(req, res) => {
   try{
     const user = await userRepository.findUser(email)
     if(!user){
-      return res.status(401).json({ error: 'User doesn\'t exist!' })
+      return res.status(401).json({ error: 'User does not exist!' })
     }
         
     const isPasswordMatching = bcrypt.compareSync(password, user.password)

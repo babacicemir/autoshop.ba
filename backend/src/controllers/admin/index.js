@@ -6,7 +6,7 @@ const blockUser = async(req, res) => {
   try{
     const blockedUser = await adminRepository.blockUser(new_id)
     if(!blockedUser){
-      return res.status(404).json({ error: 'User doesn\'t exists' })
+      return res.status(404).json({ error: 'User does not exists' })
     }
     return res.status(200).json({ message: 'User is successfuly blocked' })
   }catch(error){
@@ -20,7 +20,7 @@ const unblockUser = async(req, res) => {
   try{
     const blockedUser = await adminRepository.unblockUser(id)
     if(!blockedUser){
-      return res.status(404).json({ error: 'User doesn\'t exists' })
+      return res.status(404).json({ error: 'User does not exists' })
     }
     return res.status(200).json({ message: 'User is successfuly unblocked' })
   }catch(error){
@@ -34,7 +34,7 @@ const deleteUser = async (req, res) =>{
   try{
     const deletedUser = await adminRepository.deleteUser(id)
     if(!deletedUser){
-      return res.status(404).json({ error: 'User doesn\'t exists!' })
+      return res.status(404).json({ error: 'User does not exists!' })
     }
     return res.status(200).json({ message : 'User is successfuly deleted!' })
   }catch(error){
