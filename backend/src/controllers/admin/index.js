@@ -29,10 +29,22 @@ const unblockUser = async(req, res) => {
 }
 
 
-
+const deleteUser = async (req, res) =>{
+    const { id } = req.params;
+    try{
+        const deletedUser = await adminRepository.deleteUser(id);
+        if(!deletedUser){
+            return res.status(404).json({ error: "User doesn't exists!" });
+        }
+        return res.status(200).json({ message : "User is successfuly deleted!" });
+    }catch(error){
+        return res.status(400).json(error)
+    }
+}
 
 
 module.exports={
     blockUser,
-    unblockUser
+    unblockUser,
+    deleteUser
 }

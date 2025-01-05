@@ -14,7 +14,15 @@ const unblockUser = async(id) => {
     return result.rows[0];
 }
 
+const deleteUser = async(id) => {
+    const query = "DELETE FROM users WHERE id=$1 RETURNING*;";
+    const values = [id];
+    const result = await pool.query(query, values);
+    return result.rows[0];
+}
+
 module.exports = {
     blockUser,
-    unblockUser
+    unblockUser,
+    deleteUser
 };
