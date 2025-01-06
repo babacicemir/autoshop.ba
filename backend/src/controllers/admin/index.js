@@ -42,9 +42,23 @@ const deleteUser = async (req, res) =>{
   }
 }
 
+const reports = async(req, res)  => {
+  try{
+    const reports = await adminRepository.getReports()
+    if(!reports){
+      return res.status(404).json( { error : 'No reports found ' })
+    }
+    return res.status(200).json( { reports } )
+
+  }catch(error){
+    return res.status(400).json(error)
+  }
+}
+
 
 module.exports={
   blockUser,
   unblockUser,
-  deleteUser
+  deleteUser,
+  reports
 }

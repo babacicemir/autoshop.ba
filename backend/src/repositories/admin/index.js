@@ -21,8 +21,15 @@ const deleteUser = async(id) => {
   return result.rows[0]
 }
 
+const getReports = async() => {
+  const query = 'SELECT u.email AS "reporter_email", reported.email AS "reported_user_email", r.reason AS "reason", r.details AS "details", r.created_at AS "created_at", r.status AS "status_report" FROM reports r JOIN users u ON u.ID = r.userID JOIN users reported ON reported.ID = r.reported_user_id;'
+  const result = await pool.query(query)
+  return result.rows[0]
+}
+
 module.exports = {
   blockUser,
   unblockUser,
-  deleteUser
+  deleteUser,
+  getReports
 }
