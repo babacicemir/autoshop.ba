@@ -1,12 +1,12 @@
-const sellerRepository = require("../../repositories/seller");
+const sellerRepository = require('../../repositories/seller')
 
 
-const createAdd = async (req, res) => {
-  const { title, description, price, year, location, ownerID } = req.body;
-  const file = req.file;
+const createAd = async (req, res) => {
+  const { title, description, price, year, location, ownerID } = req.body
+  const file = req.file
 
   if (!file) {
-    return res.status(400).json({ error: "Image is required" });
+    return res.status(400).json({ error: 'Image is required' })
   }
 
 
@@ -21,16 +21,16 @@ const createAdd = async (req, res) => {
       year,
       location,
       imageURL: publicUrl,
-    };
+    }
 
-    const createdAd = await sellerRepository.createAdd(ad);
+    const createdAd = await sellerRepository.createAdd(ad)
 
-    return res.status(200).json({ message: 'Ad created successfully!', ad: createdAd });
+    return res.status(200).json({ message: 'Ad created successfully!', ad: createdAd })
   } catch (error) {
-    console.error("Error details:", error);
-    return res.status(400).json({ error: error.message || "An error occurred" });
+    console.error('Error details:', error)
+    return res.status(400).json({ error: error.message || 'An error occurred' })
   }
-};
+}
 
-module.exports = { createAdd };
+module.exports = { createAd }
 
