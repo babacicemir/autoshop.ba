@@ -6,6 +6,7 @@ const Seller = require('../../controllers/seller')
 const router = Router()
 const upload = multer()
 
-router.post('/ad/create', upload.single('image', checkJWT), Seller.createAd)
+router.post('/ad/create', upload.single('image'), checkJWT, Seller.createAd)
+router.post('/user/report/:id', checkJWT, Seller.reportUser )
 
 module.exports = router

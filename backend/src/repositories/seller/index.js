@@ -26,9 +26,18 @@ const createAdd = async(ad) => {
   return result.rows[0]
 }
 
+const reportedUser = async(reportInformations) => {
+  console.log(reportInformations)
+  const query = 'INSERT INTO reports(userid, reported_user_id, reason, details) VALUES($1, $2, $3, $4) RETURNING*'
+  const values = [reportInformations.userId, reportInformations.reportedUserId, reportInformations.reason, reportInformations.details]
+  const result = await pool.query(query, values)
+  return result.rows[0]
+}
+
 
 
 module.exports = {
   uploadPicture,
   createAdd,
+  reportedUser
 }
