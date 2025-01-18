@@ -7,6 +7,7 @@ const getUsers = async() => {
   return result.rows
 }
 
+
 const blockUser = async(id) => {
   const query = 'UPDATE users SET blocked=true WHERE ID=$1 RETURNING*;'
   const values = [id]
@@ -54,5 +55,5 @@ module.exports = {
   getReports,
   deleteAd,
   getAds,
-  getUsers
+  getUsers,
 }
