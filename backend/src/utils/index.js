@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
-const { getUserId } = require("../repositories")
-const jwt = require("jsonwebtoken")
+const { getUserId } = require('../repositories')
+const jwt = require('jsonwebtoken')
 
 const hashedPassword = (password) =>{
   const encryptedPassword = bcrypt.hashSync(password, 10)
