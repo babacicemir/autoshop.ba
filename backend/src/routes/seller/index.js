@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const { checkJWT } = require("../../middlewares")
+const { checkJWT } = require('../../middlewares')
 const multer = require('multer')
 const Seller = require('../../controllers/seller')
 
