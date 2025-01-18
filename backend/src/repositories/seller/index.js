@@ -40,9 +40,17 @@ const getAdsById = async(id) => {
   const result = await pool.query(query,values)
   return result.rows
 }
+
+const deleteAdById = async(id) => {
+  const query = 'DELETE FROM ads WHERE id=$1 RETURNING*'
+  const values = [id]
+  const result = await pool.query(query,values)
+  return result.rows[0]
+}
 module.exports = {
   uploadPicture,
   createAdd,
   reportedUser,
-  getAdsById
+  getAdsById,
+  deleteAdById,
 }

@@ -9,5 +9,6 @@ const upload = multer()
 router.post('/ad/create', upload.single('image'), checkJWT, Seller.createAd)
 router.post('/user/report/:id', checkJWT, checkAccess('seller'), Seller.reportUser )
 router.get('/myads', checkJWT, checkAccess('seller'), Seller.getAds)
+router.delete('/ad/delete/:id', checkJWT, checkAccess('seller'), Seller.deleteAd)
 
 module.exports = router
