@@ -72,9 +72,23 @@ const getAds = async(req, res) => {
   }
 }
 
+const deleteAd = async(req, res) => {
+  const { id } = req.params
+  try{
+    const deletedAd = await sellerRepository.deleteAdById(id)
+    if(!deletedAd){
+      return res.status(404).json({ error: 'ID for ad does not exists!' })
+    }
+    return res.status(200).json({ message : 'Ad is successfully deleted!' })
+  }catch(error){
+    res.status(400).json({ error : error })
+  }
+}
+
 module.exports = { 
   createAd,
   reportUser,
-  getAds
+  getAds,
+  deleteAd
 }
 
