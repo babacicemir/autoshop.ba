@@ -30,6 +30,7 @@ const checkAccess =  (expectedRole) => {
     token = token.split(' ')[1]
     try{
       const decoded = jwt.verify(token, process.env.TOKEN_CODE)
+      console.log(decoded)
       const user = await getUserId(decoded.id)
       if(user && user.role===expectedRole){
         next()

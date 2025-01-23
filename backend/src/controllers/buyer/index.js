@@ -1,4 +1,6 @@
 const buyerRepository = require("../../repositories/buyer")
+const { getUserInformationsByToken } = require('../../utils')
+
 
 const allAds = async (req, res) => {
     try{
@@ -13,6 +15,30 @@ const allAds = async (req, res) => {
     }
 }
 
+const reportUser = async (req, res) => {
+    const { reason, details } = req.body
+    const reportedUserId = req.params.id
+    try{
+      const user = await getUserInformationsByToken(req)
+      const userId = user.id
+      const reportInformations = {
+        userId,
+        reportedUserId,
+        reason,
+        details
+      }
+      const reportUser = await buyerRepository.reportedUser(reportInformations)
+      if(!reportUser){
+        return res.status(500).json( { error : 'Failed to report user' } )
+      }
+      return res.status(200).json({ message : 'User is successfully reported' })
+    
+    }catch(error){
+      return res.status(400).json( { error : error.message } )
+    }
+  }
+
 module.exports = {
     allAds,
+    reportUser,
 }
