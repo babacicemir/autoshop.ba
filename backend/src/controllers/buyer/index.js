@@ -60,26 +60,41 @@ const saveAd = async(req, res) => {
 }
 
 const deleteSavedAd = async (req, res) => {
-    const { id } = req.params
-    try{
-        const user = await getUserInformationsByToken(req)
-        const informationsAd = {
-            userId : user.id,
-            adId : id
-        }
-        const deletedAd = await buyerRepository.deleteSavedAdByIds(informationsAd)
-        if(!deletedAd){
-            return res.status(404).json({ error : 'Ad is not found!' })
-        }
-        return res.status(200).json({message : 'Saved ad is successfully deleted!'})
-    }catch(error){
-        return res.status(500).json({ error : error.message })
+  const { id } = req.params
+  try{
+    const user = await getUserInformationsByToken(req)
+    const informationsAd = {
+      userId : user.id,
+      adId : id
     }
+    const deletedAd = await buyerRepository.deleteSavedAdByIds(informationsAd)
+    if(!deletedAd){
+      return res.status(404).json({ error : 'Ad is not found!' })
+    }
+    return res.status(200).json({ message : 'Saved ad is successfully deleted!' })
+  }catch(error){
+    return res.status(500).json({ error : error.message })
+  }
+}
+
+const getSavedAds = async (req, res) => {
+  try{
+    const user = await getUserInformationsByToken(req)
+    const savedAds = await buyerRepository.getAllSavedAdsByUserId(user.id)
+    if(!savedAds){
+      return res.status(404).json({ error : 'Saved ads are not found' })
+    }
+    return res.status(200).json({ message : savedAds })
+
+  }catch(error){
+    return res.status(500).json({ error : error.message })
+  }
 }
 
 module.exports = {
   allAds,
   reportUser,
   saveAd,
-  deleteSavedAd
+  deleteSavedAd,
+  getSavedAds
 }

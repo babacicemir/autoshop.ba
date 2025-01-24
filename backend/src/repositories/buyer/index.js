@@ -21,11 +21,17 @@ const saveAd = async(informations) => {
 }
 
 const deleteSavedAdByIds = async(adInformations) => {
-    console.log(adInformations)
-    const query = 'DELETE from saved_ads WHERE user_id=$1 AND ad_id=$2 RETURNING*'
-    const values = [adInformations.userId, adInformations.adId]
-    const result = await pool.query(query, values)
-    return result.rows[0]
+  const query = 'DELETE from saved_ads WHERE user_id=$1 AND ad_id=$2 RETURNING*'
+  const values = [adInformations.userId, adInformations.adId]
+  const result = await pool.query(query, values)
+  return result.rows[0]
+}
+
+const getAllSavedAdsByUserId = async(userId) => {
+  const query = 'select  sa.id as "ad_id", sa.created_at as "ad_saved_date", title, description, price, image_url, location, status,  year, a.created_at as "ad_date"  from saved_ads sa join ads a on a.id = sa.ad_id  where sa.user_id=$1'
+  const values = [userId]
+  const result = await pool.query(query,values)
+  return result.rows
 }
 
 module.exports = {
@@ -33,4 +39,5 @@ module.exports = {
   reportedUser,
   saveAd,
   deleteSavedAdByIds,
+  getAllSavedAdsByUserId
 }
