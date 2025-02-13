@@ -47,6 +47,9 @@ const deleteAdById = async(id) => {
   const result = await pool.query(query,values)
   return result.rows[0]
 }
+
+
+
 module.exports = {
   uploadPicture,
   createAdd,

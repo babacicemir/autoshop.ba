@@ -34,10 +34,18 @@ const getAllSavedAdsByUserId = async(userId) => {
   return result.rows
 }
 
+const sendBid = async(bidInformations) => {
+  const query = 'INSERT INTO bids(bid_price, message, user_id, ad_id) VALUES ($1, $2, $3, $4) RETURNING*'
+  const values = [bidInformations.bidPrice, bidInformations.message, bidInformations.userId, bidInformations.adId]
+  const result = await pool.query(query,values)
+  return result.rows
+}
+
 module.exports = {
   getAllAds,
   reportedUser,
   saveAd,
   deleteSavedAdByIds,
-  getAllSavedAdsByUserId
+  getAllSavedAdsByUserId,
+  sendBid
 }
