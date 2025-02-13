@@ -91,10 +91,33 @@ const getSavedAds = async (req, res) => {
   }
 }
 
+const sendBid = async(req, res) => {
+  const { bidPrice, message } = req.body
+  const { id } = req.params
+  try{
+    const user = await getUserInformationsByToken(req)
+    const bidInformations = {
+      userId : user.id,
+      bidPrice,
+      message,
+      adId : id
+    }
+    const sentBid = await buyerRepository.sendBid(bidInformations)
+    if(!sentBid){
+      return res.status(500).json( { message : 'Failed to send bid!' } )
+    }
+    return res.status(200).json ({ message : 'Bid is successfully sent!' })
+
+  }catch(error){
+    return res.status(500).json({ error : error.message })
+  }
+}
+
 module.exports = {
   allAds,
   reportUser,
   saveAd,
   deleteSavedAd,
-  getSavedAds
+  getSavedAds,
+  sendBid
 }
