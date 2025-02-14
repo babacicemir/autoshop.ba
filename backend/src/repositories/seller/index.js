@@ -48,6 +48,27 @@ const deleteAdById = async(id) => {
   return result.rows[0]
 }
 
+const getAllBidsByUserId = async(id) => {
+  const query = 'SELECT * FROM ads a JOIN bids b ON a.id = b.ad_id WHERE a.user_id=$1'
+  const values = [id]
+  const result = await pool.query(query, values)
+  return result.rows
+}
+
+const acceptBid = async(adId) => {
+  const query = 'UPDATE bids SET status = $1 WHERE ad_id= $2 RETURNING*'
+  const values = ['accepted',  adId]
+  const result = await pool.query(query, values)
+  return result.rows[0]
+}
+
+const rejectBid = async(adId) => {
+  const query = 'UPDATE bids SET status = $1 WHERE ad_id= $2 RETURNING*'
+  const values = ['rejected',  adId]
+  const result = await pool.query(query, values)
+  return result.rows[0]
+}
+ 
 
 
 module.exports = {
@@ -56,4 +77,7 @@ module.exports = {
   reportedUser,
   getAdsById,
   deleteAdById,
+  getAllBidsByUserId,
+  acceptBid,
+  rejectBid
 }
