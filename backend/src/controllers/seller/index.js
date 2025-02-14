@@ -85,10 +85,61 @@ const deleteAd = async(req, res) => {
   }
 }
 
+const getAllBids = async(req, res) => {
+  try{
+    const user = await getUserInformationsByToken(req)
+    const userId = user.id
+    const bids = await sellerRepository.getAllBidsByUserId(userId)
+    console.log(bids)
+    if(!bids){
+      res.status(404).json({ message : 'Bids not found!' })
+    }
+    res.status(200).json({ message : bids })
+
+  }catch(error){
+    res.status(400).json({ error : error })
+  }
+}
+
+const acceptBid = async(req, res) => {
+  const { id } = req.params
+  try{
+    
+    const bid = await sellerRepository.acceptBid(id)
+    console.log(bid)
+    if(!bid){
+      res.status(404).json({ message : 'Bid not found!' })
+    }
+    res.status(200).json({ message : 'Bid is accepted!' })
+
+  }catch(error){
+  res.status(400).json({ error : error })
+}
+}
+
+
+const rejectBid = async(req, res) => {
+  const { id } = req.params
+  try{
+    
+    const bid = await sellerRepository.rejectBid(id)
+    if(!bid){
+      res.status(404).json({ message : 'Bid not found!' })
+    }
+    res.status(200).json({ message : 'Bid is rejected!' })
+
+  }catch(error){
+  res.status(400).json({ error : error })
+}
+}
+
 module.exports = { 
   createAd,
   reportUser,
   getAds,
-  deleteAd
+  deleteAd,
+  getAllBids,
+  acceptBid,
+  rejectBid
 }
 
