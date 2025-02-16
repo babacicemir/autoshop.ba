@@ -90,7 +90,6 @@ const getAllBids = async(req, res) => {
     const user = await getUserInformationsByToken(req)
     const userId = user.id
     const bids = await sellerRepository.getAllBidsByUserId(userId)
-    console.log(bids)
     if(!bids){
       res.status(404).json({ message : 'Bids not found!' })
     }
@@ -106,7 +105,6 @@ const acceptBid = async(req, res) => {
   try{
     
     const bid = await sellerRepository.acceptBid(id)
-    console.log(bid)
     if(!bid){
       res.status(404).json({ message : 'Bid not found!' })
     }
