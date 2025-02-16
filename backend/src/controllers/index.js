@@ -4,6 +4,7 @@ const bcrypt  = require('bcrypt')
 const jwt = require('jsonwebtoken')
  
 const signup = async (req, res)  =>{
+  console.log("evo me")
   const { email, username, password, role, birth_date } = req.body
   try{
     const userExists = await userRepository.findUser(email)
@@ -62,15 +63,20 @@ const login = async(req, res) => {
 }
 
 const login_fe = (req, res) => {
-  res.render('login' )
+  res.render('login')
 }
 const signup_fe = (req, res) => {
-  res.render('signup' )
+  res.render('signup')
+}
+
+const homepage_fe = (req, res) => {
+  res.render('homepage')
 }
 
 module.exports = {
   signup,
   login,
   login_fe,
-  signup_fe
+  signup_fe,
+  homepage_fe
 }

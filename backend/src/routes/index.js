@@ -6,9 +6,10 @@ const buyerRouter = require('./buyer')
 
 const router = Router()
 
-router.use('/users', userRouter)
+router.use('/autoshop.ba', userRouter)
 router.use('/admin', adminRouter)
 router.use('/seller', sellerRouter)
 router.use('/buyer', buyerRouter)
+
 
 module.exports = router
