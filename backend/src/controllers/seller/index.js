@@ -3,7 +3,8 @@ const { getUserInformationsByToken } = require('../../utils')
 
 
 const createAd = async (req, res) => {
-  const { title, description, price, year, location, ownerID } = req.body
+  const { title, description, price, year, location } = req.body
+  const ownerID = req.user.id
   const file = req.file
 
   if (!file) {
@@ -38,8 +39,7 @@ const reportUser = async (req, res) => {
   const { reason, details } = req.body
   const reportedUserId = req.params.id
   try{
-    const user = await getUserInformationsByToken(req)
-    const userId = user.id
+    const userId = req.user.id
     const reportInformations = {
       userId,
       reportedUserId,
@@ -59,13 +59,12 @@ const reportUser = async (req, res) => {
 
 const getAds = async(req, res) => {
   try{
-    const user = await getUserInformationsByToken(req)
-    const userId = user.id
+    const userId = req.user.id
     const ads = await sellerRepository.getAdsById(userId)
     if(!ads){
       return res.status(404).json({ error : 'No ads found!' })
     }
-    return res.status(200).json( { message : ads } )
+    res.status(200).render('seller_my_ads', { ads : ads } )
 
   }catch(error){
     return res.status(500).json( { error : error.message } )
@@ -87,33 +86,39 @@ const deleteAd = async(req, res) => {
 
 const getAllBids = async(req, res) => {
   try{
-    const user = await getUserInformationsByToken(req)
-    const userId = user.id
+    const userId = req.user.id
     const bids = await sellerRepository.getAllBidsByUserId(userId)
     if(!bids){
       res.status(404).json({ message : 'Bids not found!' })
     }
-    res.status(200).json({ message : bids })
+    res.status(200).render('seller_offers', { offers : bids })
 
   }catch(error){
     res.status(400).json({ error : error })
   }
 }
 
-const acceptBid = async(req, res) => {
-  const { id } = req.params
-  try{
-    
-    const bid = await sellerRepository.acceptBid(id)
-    if(!bid){
-      res.status(404).json({ message : 'Bid not found!' })
-    }
-    res.status(200).json({ message : 'Bid is accepted!' })
+const acceptBid = async (req, res) => {
+  const { id, adId } = req.params;
+  try {
+    const bid = await sellerRepository.acceptBid(id);
 
-  }catch(error){
-  res.status(400).json({ error : error })
-}
-}
+    if (!bid) {
+      return res.status(404).json({ message: "Bid not found!" });
+    }
+
+    const changeAdStatus = await sellerRepository.changeAdStatus(adId)
+    if (!changeAdStatus) {
+      return res.status(404).json({ message: "Ad not found!" });
+    }
+
+    res.status(200).json({ message: "Bid is accepted!" });
+
+  } catch (error) {
+      return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 
 
 const rejectBid = async(req, res) => {
@@ -122,13 +127,21 @@ const rejectBid = async(req, res) => {
     
     const bid = await sellerRepository.rejectBid(id)
     if(!bid){
-      res.status(404).json({ message : 'Bid not found!' })
+      return res.status(404).json({ message : 'Bid not found!' })
     }
-    res.status(200).json({ message : 'Bid is rejected!' })
+    return res.status(200).json({ message : 'Bid is rejected!' })
 
   }catch(error){
-  res.status(400).json({ error : error })
+  return res.status(400).json({ error : error })
 }
+}
+
+const seller_homepage_fe = (req, res) =>{
+  res.render('seller_homepage', { username : req.user.name })
+}
+
+const seller_create_ad_fe = (req, res) => {
+  res.render('seller_create_ad')
 }
 
 module.exports = { 
@@ -138,6 +151,8 @@ module.exports = {
   deleteAd,
   getAllBids,
   acceptBid,
-  rejectBid
+  rejectBid,
+  seller_homepage_fe, 
+  seller_create_ad_fe
 }
 

@@ -49,22 +49,29 @@ const deleteAdById = async(id) => {
 }
 
 const getAllBidsByUserId = async(id) => {
-  const query = 'SELECT * FROM ads a JOIN bids b ON a.id = b.ad_id WHERE a.user_id=$1'
+  const query = 'SELECT bids.id AS offer_id, users.id AS offer_user_id, users.email AS offer_email, ads.id AS ad_id, ads.title AS ad_title, ads.user_id AS owner_ad_id, ads.price AS ad_price, ads.location AS ad_location, ads.status AS ad_status, ads.created_at AS ad_created, ads.year AS ad_year, bids.id AS bid_id, bids.bid_price AS bid_price, bids.message AS bid_message, bids.created_at AS bid_created, bids.status AS bid_status FROM bids JOIN ads ON bids.ad_id = ads.id JOIN users ON bids.user_id = users.id WHERE ads.user_id=$1'
   const values = [id]
   const result = await pool.query(query, values)
   return result.rows
 }
 
 const acceptBid = async(adId) => {
-  const query = 'UPDATE bids SET status = $1 WHERE ad_id= $2 RETURNING*'
+  const query = 'UPDATE bids SET status = $1 WHERE id= $2 RETURNING*'
   const values = ['accepted',  adId]
   const result = await pool.query(query, values)
   return result.rows[0]
 }
 
 const rejectBid = async(adId) => {
-  const query = 'UPDATE bids SET status = $1 WHERE ad_id= $2 RETURNING*'
+  const query = 'UPDATE bids SET status = $1 WHERE id= $2 RETURNING*'
   const values = ['rejected',  adId]
+  const result = await pool.query(query, values)
+  return result.rows[0]
+}
+
+const changeAdStatus = async(id) => {
+  const query = 'UPDATE ads SET status = $1 WHERE id=$2 RETURNING*'
+  const values = ['sold', id]
   const result = await pool.query(query, values)
   return result.rows[0]
 }
@@ -79,5 +86,6 @@ module.exports = {
   deleteAdById,
   getAllBidsByUserId,
   acceptBid,
-  rejectBid
+  rejectBid,
+  changeAdStatus
 }

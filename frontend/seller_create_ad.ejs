@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Create Ad</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      background-color: #007bff;
+    }
+
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: white !important;
+    }
+
+    .navbar-nav {
+      margin-left: auto;
+    }
+
+    footer {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+    }
+
+    .logout-link {
+      color: white;
+      font-size: 14px;
+      text-decoration: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .logout-link:hover {
+      font-weight: bold;
+      background-color: #ddd !important;
+      color: #007bff !important;
+    }
+
+    .form-section {
+      align-items: center;
+      padding: 40px;
+      width: 80%;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+    }
+
+    .form-section h2 {
+      font-size: 2rem;
+      margin-bottom: 35px;
+      font-weight: bold;
+      color: #343a40;
+      text-align: center;
+    }
+
+    .form-label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #333;
+    }
+
+    .form-control {
+      border-radius: 8px;
+      box-shadow: none;
+      font-size: 1rem;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25);
+    }
+
+    .mb-4 {
+      margin-bottom: 1.8rem;
+    }
+
+    .btn-submit {
+      background-color: #007bff;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 15px 25px;
+      width: 60%;
+      font-size: 1.2rem;
+      display: block;
+      margin: 0 auto; /* Center the button */
+    }
+
+    .btn-submit:hover {
+      background-color: #0056b3;
+    }
+
+    .input-group-text {
+      border-radius: 8px;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-body {
+      padding: 2rem;
+    }
+
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">Autoshop.ba</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+         <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item"><a class="nav-link" href="/seller/homepage">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/seller/myads">My Ads</a></li>
+            <li class="nav-item"><a class="nav-link" href="/seller/bids">Offers</a></li>
+            <li class="nav-item"><a class="nav-link active" href="/seller/create/ad">Create Ad</a></li>
+            <li class="nav-item"><a class="btn logout-link" href="/logout">Logout</a></li>
+        </ul>
+    </div>
+</div>
+</nav>
+
+<div class="container form-section">
+    <h2>Create New Car Ad</h2>
+    <form action="/seller/ad/create" method="POST" enctype="multipart/form-data">
+        <div class="mb-4">
+            <label for="title" class="form-label">Ad Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Enter the title of the ad" required>
+        </div>
+        
+        <div class="mb-4">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="4" placeholder="Provide a detailed description" required></textarea>
+        </div>
+
+        <div class="mb-4">
+            <label for="price" class="form-label">Price (in €)</label>
+            <input type="number" class="form-control" id="price" name="price" placeholder="Enter the price" step="0.01" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="year" class="form-label">Car Year</label>
+            <input type="number" class="form-control" id="year" name="year" placeholder="Enter the car's year of manufacture" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="location" class="form-label">Location</label>
+            <input type="text" class="form-control" id="location" name="location" placeholder="Enter the car's location" required>
+        </div>
+
+        <div class="mb-4">
+            <label for="image" class="form-label">Car Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="btn btn-submit">Create Ad</button>
+    </form>
+</div>
+
+<footer>
+  <p>&copy; 2025 Autoshop.ba. Developed by Babačić Emir</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+

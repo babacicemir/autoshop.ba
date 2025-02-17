@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Autoshop.ba - Offers</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #007bff;
+    }
+
+    .navbar-brand {
+      font-size: 1.6rem;
+      font-weight: bold;
+      color: white !important;
+    }
+
+    .navbar-nav {
+      margin-left: auto;
+    }
+
+    main {
+      padding: 20px;
+      flex: 1;
+    }
+
+    .table-container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table th, table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      width: 80px;
+      background-color: #007bff;
+      transition: background-color 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #0055cc;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      position: relative;
+    }
+
+    .modal-content h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: #007bff;
+    }
+
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .modal-content select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ced4da;
+    }
+
+    .modal-content .btn-form {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+      background-color: #007bff;
+      transition: background-color 0.3s;
+      margin: 5px;
+    }
+
+    .modal-content .btn-form:hover {
+      background-color: #0055cc;
+    }
+
+    .modal-content .btn-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+
+    footer {
+      background-color: #007bff;
+      color: white;
+      text-align: center;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Autoshop.ba</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="/seller/homepage">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="/seller/myads">My Ads</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/seller/offers">Offers</a></li>
+        <li class="nav-item"><a class="nav-link" href="/seller/create/ad">Create Ad</a></li>
+        <li class="nav-item"><a class="btn logout-link" href="/logout">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <section class="table-container">
+    <h3>Offers</h3>
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th>Ad title</th>
+          <th>Ad status</th>
+          <th>Ad price</th>
+          <th>Email</th>
+          <th>Bid price</th>
+          <th>Message</th>
+          <th>Bid date</th>
+          <th>Bid status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% for (let i = 0; i < offers.length; i++) { %>
+        <tr>
+          <td><%= offers[i].ad_title %></td>
+          <td><%= offers[i].ad_status %></td>
+          <td><%= offers[i].ad_price %></td>
+          <td><%= offers[i].offer_email %></td>
+          <td><%= offers[i].bid_price %></td>
+          <td><%= offers[i].bid_message ? offers[i].bid_message : '-' %></td>
+          <td><%= new Date(offers[i].bid_created).toLocaleDateString('en-GB') %></td>
+          <td><%= offers[i].bid_status %></td>
+          <td>
+            <% if (offers[i].bid_status === 'pending') { %>
+              <button class="btn" onclick="acceptBid('<%= offers[i].bid_id %>', '<%= offers[i].ad_id %>')">Accept</button>
+              <button class="btn" onclick="rejectBid('<%= offers[i].bid_id %>')">Reject</button>
+            <% } %>
+            <button class="btn" onclick="openReportModal('<%= offers[i].offer_user_id %>')">Report</button>
+          </td>
+        </tr>
+        <% } %>
+      </tbody>
+    </table>
+  </section>
+</main>
+
+<div id="reportModal" class="modal">
+    <div class="modal-content">
+      <button class="btn-close" onclick="closeReportModal()">&times;</button>
+      <h3 style="text-align: center;">Report User</h3> <!-- Centriran naslov -->
+      <form method="POST">
+        <input type="hidden" name="reported_user_id" id="reportedUserId">
+        <textarea name="details" placeholder="Enter reason for reporting"></textarea><br>
+        <select name="reason" required>
+          <option value="Spam">Spam</option>
+          <option value="Inappropriate content">Inappropriate content</option>
+          <option value="Harassment">Harassment</option>
+          <option value="False information">False information</option>
+          <option value="Scam or fraud">Scam or fraud</option>
+          <option value="Hate speech">Hate speech</option>
+          <option value="Other">Other</option>
+        </select><br>
+        <!-- Poruka koja će se prikazati nakon uspješnog slanja -->
+        <div id="reportMessage" style="text-align: center; margin: 10px 0; color: green; display: none;"></div>
+        <!-- Dugmad -->
+        <div id="formButtons" style="text-align: center;">
+          <button class="btn-form" type="submit">Submit Report</button>
+          <button class="btn-form" type="button" onclick="closeReportModal()">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<footer>
+  <p>&copy; 2025 Autoshop.ba. Developed by Babačić Emir</p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function acceptBid(bidId, adId) {
+    if (confirm(`Are you sure you want to accept this offer?`)) {
+      $.ajax({
+        url: `/seller/bid/accept/${bidId}/${adId}`,
+        type: "PUT",
+        success: function () {
+          alert(`Bid accepted successfully!`);
+          location.reload();
+        },
+        error: function () {
+          alert(`Failed to accept bid.`);
+        }
+      });
+    }
+  }
+
+  function rejectBid(bidId) {
+    if (confirm(`Are you sure you want to reject this offer?`)) {
+      $.ajax({
+        url: `/seller/bid/reject/${bidId}`,
+        type: "PUT",
+        success: function () {
+          alert(`Bid rejected successfully!`);
+          location.reload();
+        },
+        error: function () {
+          alert(`Failed to reject bid.`);
+        }
+      });
+    }
+  }
+
+  function openReportModal(userId) {
+  document.getElementById('reportedUserId').value = userId;
+
+  const form = document.querySelector('#reportModal form');
+  form.action = `/seller/user/report/${userId}`;
+
+  const reportMessage = document.getElementById('reportMessage');
+  const formButtons = document.getElementById('formButtons');
+  reportMessage.style.display = 'none';
+  reportMessage.textContent = '';
+  formButtons.style.display = 'block'; 
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault(); 
+
+    $.ajax({
+      url: form.action,
+      type: "POST",
+      data: $(form).serialize(), 
+      success: function (response) {
+        reportMessage.textContent = response.message; 
+        reportMessage.style.display = 'block'; 
+        formButtons.innerHTML = '<button class="btn-form" type="button" onclick="closeReportModal()">Close</button>'; // Sakrij "Submit Report" i prikaži samo "Close"
+      },
+      error: function (xhr, status, error) {
+        reportMessage.textContent = xhr.responseJSON.error || 'Failed to report user.';
+        reportMessage.style.color = 'red'; 
+        reportMessage.style.display = 'block'; 
+      }
+    });
+  });
+
+  document.getElementById('reportModal').style.display = 'flex';
+}
+
+function closeReportModal() {
+  document.getElementById('reportModal').style.display = 'none';
+}
+</script>
+
+</body>
+</html>
