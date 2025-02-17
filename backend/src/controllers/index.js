@@ -4,7 +4,6 @@ const bcrypt  = require('bcrypt')
 const jwt = require('jsonwebtoken')
  
 const signup = async (req, res)  =>{
-  console.log("evo me")
   const { email, username, password, role, birth_date } = req.body
   try{
     const userExists = await userRepository.findUser(email)
@@ -35,7 +34,6 @@ const signup = async (req, res)  =>{
 const login = async(req, res) => {
   const { email, password } = req.body
   try{
-    console.log(email, password)
     const user = await userRepository.findUser(email)
     if(!user){
       return res.status(401).json({ error: 'User does not exist!' })
@@ -55,12 +53,28 @@ const login = async(req, res) => {
     }
 
     const token = jwt.sign(payload, process.env.TOKEN_CODE)
-    return res.status(200).json({ message: 'Login successful', data: token })
+    
+    res.cookie('token', token, {
+      httpOnly: true,  
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict', 
+      maxAge: 7200000, 
+    });
+
+
+    if (user.role === 'admin') {
+      return res.status(200).redirect('/admin/homepage')
+    }
 
   }catch(error){
     return res.status(401).json({ error: 'Login unsuccessful' })
   }
 }
+
+const logoutUser = (req, res) => {
+  res.clearCookie('token'); 
+  res.redirect('/autoshop.ba'); 
+};
 
 const login_fe = (req, res) => {
   res.render('login')
@@ -78,5 +92,6 @@ module.exports = {
   login,
   login_fe,
   signup_fe,
-  homepage_fe
+  homepage_fe, 
+  logoutUser
 }

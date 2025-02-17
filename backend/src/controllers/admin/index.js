@@ -1,17 +1,46 @@
 const adminRepository = require('../../repositories/admin')
+const userRepository = require('../../repositories/index')
+const { hashedPassword } = require('../../utils')
 
-
-const users = async(req, res) => {
-  try{
+const users = async (req, res) => {
+  try {
     const users = await adminRepository.getUsers()
-    if(!users){
-      return res.status(404).json( { error : 'No users found ' })
+    if (!users) {
+      return res.status(404).render('admin_users', { error: 'No users found' })
+    }
+    res.status(200).render('admin_users', { users: users }) 
+  } catch (error) {
+    return res.status(500).render('admin_users', { error: error.message }); 
+  }
+};
+
+
+const createUser = async(req, res) => {
+  const { email, username, password, role, birth_date } = req.body
+  try{
+
+    const userExists = await userRepository.findUser(email)
+    if(userExists){
+      return res.status(401).render('/admin/users', { error: 'User already exists!' });
     }
 
-    res.status(200).json( { message : users } )
+    const encryptedPassword = hashedPassword(password)
 
-  }catch(error){
-    return res.status(500).json({ error })
+    const data = {
+      email,
+      username,
+      password : encryptedPassword,
+      role,
+      birth_date
+    }
+
+
+    const user = await userRepository.createUser(data)
+    if (user) {
+      res.redirect('/admin/users')
+    }
+  } catch (error) {
+    return res.status(400).json(error)
   }
 }
 
@@ -64,7 +93,7 @@ const reports = async(req, res)  => {
     if(!reports){
       return res.status(404).json( { error : 'No reports found ' })
     }
-    return res.status(200).json( { reports } )
+    res.status(200).render('admin_reports', { reports: reports }) 
 
   }catch(error){
     return res.status(400).json(error)
@@ -78,7 +107,7 @@ const ads = async(req, res) => {
       return res.status(404).json( { error : 'No ads found ' })
     }
 
-    return res.status(200).json( { message : ads } )
+    res.render('admin_ads', { ads : ads })
 
 
   }catch(error){
@@ -100,6 +129,14 @@ const deleteAd = async(req, res) => {
   }
 }
 
+const admin_homepage_fe = (req, res) => {
+  res.render('admin_homepage.ejs', { username: req.user.name })
+}
+
+
+
+
+
 
 module.exports={
   blockUser,
@@ -108,5 +145,7 @@ module.exports={
   reports,
   ads,
   deleteAd,
-  users
+  users,
+  admin_homepage_fe,
+  createUser
 }

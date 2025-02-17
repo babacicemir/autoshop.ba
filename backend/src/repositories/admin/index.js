@@ -30,7 +30,7 @@ const deleteUser = async(id) => {
 }
 
 const getReports = async() => {
-  const query = 'SELECT u.email AS "reporter_email", reported.email AS "reported_user_email", r.reason AS "reason", r.details AS "details", r.created_at AS "created_at", r.status AS "status_report" FROM reports r JOIN users u ON u.ID = r.userID JOIN users reported ON reported.ID = r.reported_user_id;'
+  const query = 'SELECT r.id AS "report_id", u.email AS "reporter_email", reported.email AS "reported_user_email", r.reason AS "reason", r.details AS "details", r.created_at AS "created_at", r.status AS "status_report" FROM reports r JOIN users u ON u.ID = r.userID JOIN users reported ON reported.ID = r.reported_user_id;'
   const result = await pool.query(query)
   return result.rows
 }
@@ -43,7 +43,7 @@ const deleteAd = async(id) => {
 }
 
 const getAds = async() => {
-  const query = 'select a.id as "add_id", u.email , u.username, a.title, a.description, a.price, a.year, a.image_url, a.location, a.status, a.created_at from ads a join users u on u.ID = a.user_id ;'
+  const query = 'select a.id as "ad_id", u.email , u.username, a.title, a.description, a.price, a.year, a.image_url, a.location, a.status, a.created_at from ads a join users u on u.ID = a.user_id ;'
   const result = await pool.query(query)
   return result.rows
 }
