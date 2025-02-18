@@ -5,11 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Autoshop.ba - My Ads</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #f4f4f4;
       margin: 0;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .navbar {
@@ -24,6 +28,11 @@
 
     .navbar-nav {
       margin-left: auto;
+    }
+
+    main {
+      flex: 1;
+      padding: 20px 0;
     }
 
     .ads-container {
@@ -64,7 +73,7 @@
       font-size: 1.2rem;
       font-weight: bold;
       margin-bottom: 5px;
-      color: #003366;
+      color: #007bff;
     }
 
     .ad-price {
@@ -73,29 +82,58 @@
       color: #007bff;
     }
 
-    .ad-location {
+    .ad-side-informations {
       font-size: 0.9rem;
       color: gray;
-      margin-top: 5px;
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ad-side-informations .info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .ad-side-informations .info-item i {
+      color: #007bff;
+      font-size: 1rem;
     }
 
     .ad-actions {
-      text-align: center;
-      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
     }
 
-    .btn-delete {
-      background-color: #007bff;
-      color: white;
-      padding: 8px 12px;
+    .btn-view, .btn-save {
+      padding: 8px 16px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s;
+      font-size: 0.9rem;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    .btn-delete:hover {
-      background-color: blue;
+    .btn-view {
+      background-color: #007bff;
+      color: white;
+    }
+
+    .btn-view:hover {
+      background-color: #0056b3;
+    }
+
+    .btn-save {
+      background-color: #28a745;
+      color: white;
+    }
+
+    .btn-save:hover {
+      background-color: #218838;
     }
 
     .logout-link {
@@ -111,7 +149,7 @@
       font-weight: bold;
       background-color: #ddd !important;
       color: #007bff !important;
-      cursor: p;
+      cursor: pointer;
     }
 
     .footer {
@@ -119,9 +157,8 @@
       color: white;
       text-align: center;
       padding: 10px 0;
-      margin-top: 30px;
+      margin-top: auto;
     }
-
   </style>
 </head>
 <body>
@@ -134,18 +171,16 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="/seller/homepage">Home</a></li>
-        <li class="nav-item"><a class="nav-link active" href="/seller/myads">My Ads</a></li>
-        <li class="nav-item"><a class="nav-link" href="/seller/bids">Offers</a></li>
-        <li class="nav-item"><a class="nav-link" href="/seller/create/ad">Create Ad</a></li>
+        <li class="nav-item"><a class="nav-link" href="/buyer/welcome">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="/buyer/homepage">Ads</a></li>
+        <li class="nav-item"><a class="nav-link" href="/buyer/ads/saved">Saved Ads</a></li>
         <li class="nav-item"><a class="btn logout-link" href="/logout">Logout</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<main class="container mt-4">
-  <h3 class="text-left ">Ads Management</h3>
+<main class="container">
   <div class="ads-container">
     <% for (let i = 0; i < ads.length; i++) { %>
       <div class="ad-card">
@@ -153,9 +188,27 @@
         <div class="ad-content">
           <p class="ad-title"><%= ads[i].title %></p>
           <p class="ad-price"><%= ads[i].price %> KM</p>
-          <p class="ad-location">📍 <%= ads[i].location || 'Unknown location' %></p>
+          <div class="ad-side-informations">
+            <div class="info-item">
+              <i class="fas fa-info-circle"></i>
+              <span> <%= ads[i].status %></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-calendar-alt"></i>
+              <span> <%= ads[i].year %></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <span> <%= ads[i].location || 'Unknown location' %></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <span><%= new Date(ads[i].created_at).toLocaleDateString('en-GB') %></span>
+            </div>
+          </div>
           <div class="ad-actions">
-            <button class="btn-delete btn-sm" onclick="deleteAd('<%= ads[i].id %>')">Delete</button>
+            <button class="btn btn-view" onclick="viewAd('<%= ads[i].id %>')">View</button>
+            <button class="btn btn-save" onclick="saveAd('<%= ads[i].id %>')">Save</button>
           </div>
         </div>
       </div>
@@ -167,31 +220,28 @@
   <p>&copy; 2025 Autoshop.ba | Developed by Emir Babačić</p>
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+  function viewAd(adId) {
+    window.location.href = `/buyer/ad/${adId}`;
+  }
 
-    function deleteAd(id) {
-    if (confirm("Are you sure you want to delete this ad?")) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("DELETE", `/seller/ad/delete/${id}`, true);
-      xhr.setRequestHeader("Content-Type", "application/json");
-
-      xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            alert("Ad deleted successfully");
-            location.reload();
-          } else {
-            alert("Error deleting ad");
-          }
+  function saveAd(adId) {
+    if (confirm(`Are you sure you want to save this ad?`)) {
+      $.ajax({
+        url: `/buyer/ad/save/${adId}`,
+        type: "POST",
+        success: function () {
+          alert(`Ad saved successfully!`);
+          location.reload(); 
+        },
+        error: function () {
+          alert(`Failed to save ad.`);
         }
-      };
-
-      xhr.send();
+      });
     }
   }
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

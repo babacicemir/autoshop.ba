@@ -70,6 +70,10 @@ const login = async(req, res) => {
       return res.status(200).redirect('/seller/homepage')
     }
 
+    if (user.role === 'buyer') {
+      return res.status(200).redirect('/buyer/welcome')
+    }
+
   }catch(error){
     return res.status(401).json({ error: 'Login unsuccessful' })
   }

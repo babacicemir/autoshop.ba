@@ -8,7 +8,7 @@ const allAds = async (req, res) => {
     if(!ads){
       return res.status(404).json({ error : 'Ads are not found!' })
     }
-    return res.status(200).json({ message : ads })
+    return res.status(200).render("buyer_all_ads_without_token", { ads : ads })
 
   }catch(error){
     return res.status(400).json( { error : error.message } )
@@ -17,16 +17,17 @@ const allAds = async (req, res) => {
 
 const reportUser = async (req, res) => {
   const { reason, details } = req.body
-  const reportedUserId = req.params.id
+  const { id } = req.params
   try{
-    const user = await getUserInformationsByToken(req)
-    const userId = user.id
+   
+    const userId = req.user.id
     const reportInformations = {
       userId,
-      reportedUserId,
+      reportedUserId : id,
       reason,
       details
     }
+
     const reportUser = await buyerRepository.reportedUser(reportInformations)
     if(!reportUser){
       return res.status(500).json( { error : 'Failed to report user' } )
@@ -42,9 +43,8 @@ const saveAd = async(req, res) => {
   const { id } = req.params
 
   try{
-    const user = await getUserInformationsByToken(req)
     const informations = {
-      userId : user.id,
+      userId : req.user.id,
       adId : id
     }
     const savedAd = await buyerRepository.saveAd(informations)
@@ -62,10 +62,28 @@ const saveAd = async(req, res) => {
 const deleteSavedAd = async (req, res) => {
   const { id } = req.params
   try{
-    const user = await getUserInformationsByToken(req)
+    console.log(id, req.user.id)
     const informationsAd = {
-      userId : user.id,
+      userId : req.user.id,
       adId : id
+    }
+    const deletedAd = await buyerRepository.deleteSavedAdByIds(informationsAd)
+    if(!deletedAd){
+      return res.status(404).json({ error : 'Ad is not found!' })
+    }
+    return res.status(200).json({ message : 'Saved ad is successfully deleted!' })
+  }catch(error){
+    return res.status(500).json({ error : error.message })
+  }
+}
+
+const deleteAd = async (req, res) => {
+  const { id } = req.params
+  try{
+    console.log(id, req.user.id)
+    const informationsAd = {
+      userId : req.user.id,
+      savedAdId : id
     }
     const deletedAd = await buyerRepository.deleteSavedAdByIds(informationsAd)
     if(!deletedAd){
@@ -79,23 +97,24 @@ const deleteSavedAd = async (req, res) => {
 
 const getSavedAds = async (req, res) => {
   try{
-    const user = await getUserInformationsByToken(req)
-    const savedAds = await buyerRepository.getAllSavedAdsByUserId(user.id)
+    const userId = req.user.id
+    const savedAds = await buyerRepository.getAllSavedAdsByUserId(userId)
     if(!savedAds){
       return res.status(404).json({ error : 'Saved ads are not found' })
     }
-    return res.status(200).json({ message : savedAds })
+    return res.status(200).render("buyer_saved_ads", { ads : savedAds })
 
   }catch(error){
     return res.status(500).json({ error : error.message })
   }
 }
 
+
 const sendBid = async(req, res) => {
   const { bidPrice, message } = req.body
   const { id } = req.params
   try{
-    const user = await getUserInformationsByToken(req)
+    const user = req.user.id 
     const bidInformations = {
       userId : user.id,
       bidPrice,
@@ -113,11 +132,47 @@ const sendBid = async(req, res) => {
   }
 }
 
+const allAds_homepage_fe = async (req, res) => {
+  try{
+    const ads = await buyerRepository.getAllAds()
+    if(!ads){
+      return res.status(404).json({ error : 'Ads are not found!' })
+    }
+    return res.status(200).render("buyer_homepage", { ads : ads })
+
+  }catch(error){
+    return res.status(400).json( { error : error.message } )
+  }
+}
+
+const getAd = async(req, res) => {
+  const { id } = req.params
+  try{
+    const ad = await buyerRepository.getAdById(id)
+    console.log(ad)
+    if(!ad) {
+      return res.status(404).json( { error : 'Ad not found!'})
+    }
+    return res.status(200).render("buyer_view_ad", { ad : ad })
+  }
+  catch(error){
+    return res.status(400).json( { error : error.message } )
+  }
+}
+
+const welcome_page_fe = async(req, res) => {
+  res.render("buyer_welcome_page", { username : req.user.name })
+}
+
 module.exports = {
   allAds,
   reportUser,
   saveAd,
   deleteSavedAd,
   getSavedAds,
-  sendBid
+  sendBid,
+  allAds_homepage_fe,
+  deleteAd,
+  welcome_page_fe,
+  getAd
 }

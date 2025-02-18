@@ -220,7 +220,7 @@
 <div id="reportModal" class="modal">
     <div class="modal-content">
       <button class="btn-close" onclick="closeReportModal()">&times;</button>
-      <h3 style="text-align: center;">Report User</h3> <!-- Centriran naslov -->
+      <h3 style="text-align: center;">Report User</h3> 
       <form method="POST">
         <input type="hidden" name="reported_user_id" id="reportedUserId">
         <textarea name="details" placeholder="Enter reason for reporting"></textarea><br>
@@ -233,9 +233,7 @@
           <option value="Hate speech">Hate speech</option>
           <option value="Other">Other</option>
         </select><br>
-        <!-- Poruka koja će se prikazati nakon uspješnog slanja -->
         <div id="reportMessage" style="text-align: center; margin: 10px 0; color: green; display: none;"></div>
-        <!-- Dugmad -->
         <div id="formButtons" style="text-align: center;">
           <button class="btn-form" type="submit">Submit Report</button>
           <button class="btn-form" type="button" onclick="closeReportModal()">Close</button>
