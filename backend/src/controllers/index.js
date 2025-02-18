@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken')
  
 const signup = async (req, res)  =>{
   const { email, username, password, role, birth_date } = req.body
+  console.log(email, username, password, role, birth_date)
   try{
     const userExists = await userRepository.findUser(email)
     if(userExists){
@@ -22,9 +23,11 @@ const signup = async (req, res)  =>{
     }
 
     const user = await userRepository.createUser(data)
+
+    console.log(data)
     
     if (user) {
-      res.redirect('/users/login')
+      res.redirect('/autoshop.ba/login')
     }
   } catch (error) {
     return res.status(400).json(error)
@@ -88,7 +91,7 @@ const login_fe = (req, res) => {
   res.render('login')
 }
 const signup_fe = (req, res) => {
-  res.render('signup')
+  res.render('signup', { error: null })
 }
 
 const homepage_fe = (req, res) => {

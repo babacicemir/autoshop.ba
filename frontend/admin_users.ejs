@@ -134,10 +134,18 @@
       border: 1px solid #ced4da;
     }
 
-    .modal-content form .btn{
+    .modal-content form .btn-form {
         margin-top: 10px;
+        margin-right: 10px;
+        display: inline-block; 
+        width: 80px; 
     }
 
+    .modal-content .btn-form:nth-child(2) { 
+        margin-top: 10px;
+        display: inline-block; 
+        width: auto;
+    }
 
     footer {
       background-color: #003366;
@@ -160,7 +168,7 @@
       font-weight: bold;
       background-color: #ddd !important;
       color: #003366 !important;
-      cursor: p;
+      cursor: pointer;
     }
 
   </style>
@@ -177,9 +185,9 @@
             <ul class="navbar-nav ms-auto">
               <li class="nav-item"><a class="nav-link" href="/admin/homepage">Home</a></li>
               <li class="nav-item"><a class="nav-link active" href="/admin/users">Users</a></li>
-              <li class="nav-item"><a class="nav-link " href="/admin/ads">Ads</a></li>
-              <li class="nav-item"><a class="nav-link " href="/admin/reports">Reports</a></li>
-              <li class="nav-item"><a class="btn logout-link " href="/logout">Logout</a></li>
+              <li class="nav-item"><a class="nav-link" href="/admin/ads">Ads</a></li>
+              <li class="nav-item"><a class="nav-link" href="/admin/reports">Reports</a></li>
+              <li class="nav-item"><a class="btn logout-link" href="/autoshop.ba/logout">Logout</a></li>
             </ul>
           </div>
         </div>
@@ -236,9 +244,10 @@
         <option value="buyer">Buyer</option>
       </select><br>
       <input type="date" name="birth_date" required><br>
-      <button class="btn-form" type="submit">Add User</button>
+      <button class="btn-form" type="submit">Add</button>
+      <button class="btn-form" onclick="closeModal()">Close</button>
     </form>
-    <button class="btn-form" onclick="closeModal()">Close</button>
+    
   </div>
 </div>
 
@@ -324,6 +333,7 @@
 
 </body>
 </html>
+
 
 
 
