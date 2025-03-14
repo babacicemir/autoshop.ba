@@ -10,9 +10,9 @@ const users = async (req, res) => {
     }
     res.status(200).render('admin_users', { users: users }) 
   } catch (error) {
-    return res.status(500).render('admin_users', { error: error.message }); 
+    return res.status(500).render('admin_users', { error: error.message }) 
   }
-};
+}
 
 
 const createUser = async(req, res) => {
@@ -21,7 +21,7 @@ const createUser = async(req, res) => {
 
     const userExists = await userRepository.findUser(email)
     if(userExists){
-      return res.status(401).render('/admin/users', { error: 'User already exists!' });
+      return res.status(401).render('/admin/users', { error: 'User already exists!' })
     }
 
     const encryptedPassword = hashedPassword(password)
@@ -40,7 +40,7 @@ const createUser = async(req, res) => {
       res.redirect('/admin/users')
     }
   } catch (error) {
-    return res.status(400).json(error)
+    return res.status(500).json(error)
   }
 }
 
@@ -96,6 +96,24 @@ const reports = async(req, res)  => {
     res.status(200).render('admin_reports', { reports: reports }) 
 
   }catch(error){
+    return res.status(500).json(error)
+  }
+}
+
+const changeReportStatus = async(req, res) => {
+  const {userId, reportId} = req.params
+  try{
+    const blockedUser = await adminRepository.blockUser(userId)
+    if(!blockedUser){
+      return res.status(404).json({ error: 'User does not exists' })
+    }
+    const changedReportStatus = await adminRepository.changeReportStatus(reportId)
+    if(!changedReportStatus){
+      return res.status(404).json({ error : 'Report does not exists' })  
+    }
+    return res.status(200).json({message : 'Report is successfully solved'})
+
+  }catch(error){
     return res.status(400).json(error)
   }
 }
@@ -106,6 +124,7 @@ const ads = async(req, res) => {
     if(!ads){
       return res.status(404).json( { error : 'No ads found ' })
     }
+
 
     res.render('admin_ads', { ads : ads })
 
@@ -147,5 +166,6 @@ module.exports={
   deleteAd,
   users,
   admin_homepage_fe,
-  createUser
+  createUser,
+  changeReportStatus
 }

@@ -30,9 +30,16 @@ const deleteUser = async(id) => {
 }
 
 const getReports = async() => {
-  const query = 'SELECT r.id AS "report_id", u.email AS "reporter_email", reported.email AS "reported_user_email", r.reason AS "reason", r.details AS "details", r.created_at AS "created_at", r.status AS "status_report" FROM reports r JOIN users u ON u.ID = r.userID JOIN users reported ON reported.ID = r.reported_user_id;'
+  const query = '  SELECT r.id AS "report_id", u.email AS "reporter_email", r.reported_user_id , reported.email AS "reported_user_email", r.reason AS "reason", r.details AS "details", r.created_at AS "created_at", r.status AS "status_report" FROM reports r JOIN users u ON u.ID = r.userID JOIN users reported ON reported.ID = r.reported_user_id;'
   const result = await pool.query(query)
   return result.rows
+}
+
+const changeReportStatus = async(id) => {
+  const query = 'UPDATE reports SET status=$1 WHERE id = $2 RETURNING*';
+  const values = [ 'Resolved', id ]
+  const result = await pool.query(query, values)
+  return result.rows[0]
 }
 
 const deleteAd = async(id) => {
@@ -56,4 +63,5 @@ module.exports = {
   deleteAd,
   getAds,
   getUsers,
+  changeReportStatus
 }

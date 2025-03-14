@@ -8,7 +8,7 @@ const allAds = async (req, res) => {
     if(!ads){
       return res.status(404).json({ error : 'Ads are not found!' })
     }
-    return res.status(200).render("buyer_all_ads_without_token", { ads : ads })
+    return res.status(200).render('buyer_all_ads_without_token', { ads : ads })
 
   }catch(error){
     return res.status(400).json( { error : error.message } )
@@ -102,7 +102,7 @@ const getSavedAds = async (req, res) => {
     if(!savedAds){
       return res.status(404).json({ error : 'Saved ads are not found' })
     }
-    return res.status(200).render("buyer_saved_ads", { ads : savedAds })
+    return res.status(200).render('buyer_saved_ads', { ads : savedAds })
 
   }catch(error){
     return res.status(500).json({ error : error.message })
@@ -138,7 +138,7 @@ const allAds_homepage_fe = async (req, res) => {
     if(!ads){
       return res.status(404).json({ error : 'Ads are not found!' })
     }
-    return res.status(200).render("buyer_homepage", { ads : ads })
+    return res.status(200).render('buyer_homepage', { ads : ads })
 
   }catch(error){
     return res.status(400).json( { error : error.message } )
@@ -151,9 +151,9 @@ const getAd = async(req, res) => {
     const ad = await buyerRepository.getAdById(id)
     console.log(ad)
     if(!ad) {
-      return res.status(404).json( { error : 'Ad not found!'})
+      return res.status(404).json( { error : 'Ad not found!' })
     }
-    return res.status(200).render("buyer_view_ad", { ad : ad })
+    return res.status(200).render('buyer_view_ad', { ad : ad })
   }
   catch(error){
     return res.status(400).json( { error : error.message } )
@@ -161,7 +161,7 @@ const getAd = async(req, res) => {
 }
 
 const welcome_page_fe = async(req, res) => {
-  res.render("buyer_welcome_page", { username : req.user.name })
+  res.render('buyer_welcome_page', { username : req.user.name })
 }
 
 module.exports = {

@@ -1,49 +1,49 @@
-const jwt = require('jsonwebtoken');
-const { getUserId } = require('../repositories');
+const jwt = require('jsonwebtoken')
+const { getUserId } = require('../repositories')
 
 const checkJWT = async (req, res, next) => {
-  let token = req.cookies.token; 
+  let token = req.cookies.token 
   if (!token) {
-    return res.status(401).json({ error: 'Missing token!' });
+    return res.status(401).json({ error: 'Missing token!' })
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.TOKEN_CODE);
-    const user = await getUserId(decoded.id);
+    const decoded = jwt.verify(token, process.env.TOKEN_CODE)
+    const user = await getUserId(decoded.id)
     if (user) {
-      req.user = decoded; 
-      next();
+      req.user = decoded 
+      next()
     } else {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: 'Unauthorized' })
     }
   } catch (error) {
-    return res.status(400).json({ error: 'Invalid token' });
+    return res.status(400).json({ error: 'Invalid token' })
   }
-};
+}
 
 const checkAccess = (expectedRole) => {
   return async (req, res, next) => {
-    let token = req.cookies.token;
+    let token = req.cookies.token
     if (!token) {
-      return res.status(401).json({ error: 'Missing token!' });
+      return res.status(401).json({ error: 'Missing token!' })
     }
 
     try {
-      const decoded = jwt.verify(token, process.env.TOKEN_CODE);
-      const user = await getUserId(decoded.id);
+      const decoded = jwt.verify(token, process.env.TOKEN_CODE)
+      const user = await getUserId(decoded.id)
       if (user && user.role === expectedRole) {
-        req.user = decoded; 
-        next();
+        req.user = decoded 
+        next()
       } else {
-        return res.status(403).json({ error: 'Access denied' });
+        return res.status(403).json({ error: 'Access denied' })
       }
     } catch (error) {
-      return res.status(400).json(error);
+      return res.status(400).json(error)
     }
-  };
-};
+  }
+}
 
 module.exports = {
   checkJWT,
   checkAccess,
-};
+}

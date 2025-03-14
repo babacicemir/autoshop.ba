@@ -8,7 +8,7 @@ const routes = require('./routes')
 const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
-const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser')
 
 
 app.use(bodyParser.json())
@@ -21,9 +21,9 @@ app.use((err, req, res, next) => {
   res.status(500).send(err)
 })
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, '../../frontend'));
-app.engine('ejs', require('ejs').renderFile);
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, '../../frontend'))
+app.engine('ejs', require('ejs').renderFile)
 
 
 app.listen(process.env.PORT, () => {

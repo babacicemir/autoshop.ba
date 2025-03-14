@@ -141,6 +141,7 @@
           <th>Details</th>
           <th>Created</th>
           <th>Status</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -153,6 +154,7 @@
           <td><%= reports[i].details %></td>
           <td><%= new Date(reports[i].created_at).toLocaleDateString('en-GB')  %></td>
           <td><%= reports[i].status_report  %></td>
+          <td><button class="btn" onclick="blockUser('<%= reports[i].reported_user_id %>', '<%= reports[i].report_id %>')">Resolve</button></td>
           
         </tr>
         <% } %>
@@ -165,6 +167,45 @@
 <footer>
   <p>&copy; 2025 Admin Panel. Powered by Babačić Emir</p>
 </footer>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+  
+  function blockUser(userId, reportId) {
+    if (confirm("Are you sure you want to block this user?")) {
+      $.ajax({
+        url: `/admin/report/block/${userId}/${reportId}`,
+        type: "PUT",
+        success: function () {
+          alert("User blocked successfully!");
+          location.reload();
+        },
+        error: function () {
+          console.error("Error details:", xhr.responseText);
+          alert("Failed to block user.");
+        },
+      });
+    }
+  }
+
+  function unblockUser(userId) {
+    if (confirm("Are you sure you want to unblock this user?")) {
+      $.ajax({
+        url: `/admin/unblock/${userId}`,
+        type: "PUT",
+        success: function () {
+          alert("User unblocked successfully!");
+          location.reload();
+        },
+        error: function () {
+          alert("Failed to unblock user.");
+        },
+      });
+    }
+  }
+
+</script>
 
 
 </body>

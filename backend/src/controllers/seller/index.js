@@ -99,25 +99,25 @@ const getAllBids = async(req, res) => {
 }
 
 const acceptBid = async (req, res) => {
-  const { id, adId } = req.params;
+  const { id, adId } = req.params
   try {
-    const bid = await sellerRepository.acceptBid(id);
+    const bid = await sellerRepository.acceptBid(id)
 
     if (!bid) {
-      return res.status(404).json({ message: "Bid not found!" });
+      return res.status(404).json({ message: 'Bid not found!' })
     }
 
     const changeAdStatus = await sellerRepository.changeAdStatus(adId)
     if (!changeAdStatus) {
-      return res.status(404).json({ message: "Ad not found!" });
+      return res.status(404).json({ message: 'Ad not found!' })
     }
 
-    res.status(200).json({ message: "Bid is accepted!" });
+    res.status(200).json({ message: 'Bid is accepted!' })
 
   } catch (error) {
-      return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: 'Internal server error' })
   }
-};
+}
 
 
 
@@ -132,8 +132,8 @@ const rejectBid = async(req, res) => {
     return res.status(200).json({ message : 'Bid is rejected!' })
 
   }catch(error){
-  return res.status(400).json({ error : error })
-}
+    return res.status(400).json({ error : error })
+  }
 }
 
 const seller_homepage_fe = (req, res) =>{

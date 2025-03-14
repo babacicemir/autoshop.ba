@@ -9,7 +9,7 @@ const signup = async (req, res)  =>{
   try{
     const userExists = await userRepository.findUser(email)
     if(userExists){
-      return res.status(401).render('signup', { error: 'User already exists!' });
+      return res.status(401).render('signup', { error: 'User already exists!' })
     }
 
     const encryptedPassword = hashedPassword(password)
@@ -41,6 +41,10 @@ const login = async(req, res) => {
     if(!user){
       return res.status(401).json({ error: 'User does not exist!' })
     }
+
+    if(user.blocked===true){
+      return res.status(403).json({ error: 'Access denied' })
+    }
         
     const isPasswordMatching = bcrypt.compareSync(password, user.password)
     if(!isPasswordMatching){
@@ -62,7 +66,7 @@ const login = async(req, res) => {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'Strict', 
       maxAge: 7200000, 
-    });
+    })
 
 
     if (user.role === 'admin') {
@@ -83,9 +87,9 @@ const login = async(req, res) => {
 }
 
 const logoutUser = (req, res) => {
-  res.clearCookie('token'); 
-  res.redirect('/autoshop.ba'); 
-};
+  res.clearCookie('token') 
+  res.redirect('/autoshop.ba') 
+}
 
 const login_fe = (req, res) => {
   res.render('login')

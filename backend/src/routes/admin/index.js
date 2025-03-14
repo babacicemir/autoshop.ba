@@ -13,6 +13,7 @@ router.delete('/delete/:id', checkJWT, checkAccess('admin'), Admin.deleteUser)
 router.get('/reports', checkJWT, checkAccess('admin'), Admin.reports)
 router.get('/ads', checkJWT, checkAccess('admin'), Admin.ads)
 router.delete('/ads/delete/:id', checkJWT, checkAccess('admin'), Admin.deleteAd)
+router.put('/report/block/:userId/:reportId', checkJWT, checkAccess('admin'), Admin.changeReportStatus)
 
 router.get('/homepage', checkJWT, checkAccess('admin'), Admin.admin_homepage_fe)
 router.get('/users', checkJWT, checkAccess('admin'), Admin.users)
