@@ -1,65 +1,68 @@
 # Autoshop.ba
 
-**Autoshop.ba** je web aplikacija za prodaju i kupovinu automobila koja omogućava korisnicima da kreiraju oglase, šalju ponude, prate oglase i komuniciraju s prodavačima. Aplikacija ima tri tipa korisnika: administrator, prodavač i kupac, svaki sa specifičnim funkcionalnostima i pravima pristupa.
+**Autoshop.ba** is a web application for buying and selling cars that allows users to create advertisements, send offers, track listings, and communicate with sellers. The application supports three types of users: administrator, seller, and buyer, each with specific functionalities and access permissions.
 
-
-## Funkcionalnosti
+## Features
 
 ### Administrator
-Administrator može:
-- Kreirati, brisati i upravljati korisnicima (prodavači i kupci)
-- Blokirati i deblokirati korisnike
-- Brisati oglase
-- Pregledavati i rješavati prijave korisnika
+Administrators can:
+- Create, delete, and manage users (sellers and buyers)
+- Block and unblock users
+- Delete advertisements
+- Review and resolve user reports
 
-### Prodavač
-Prodavači mogu:
-- Registrirati svoj profil
-- Kreirati i upravljati više oglasa sa svim informacijama o automobilima
-- Pregledavati sve ponude za svoje oglase i prihvatiti ili odbiti ponude
-- Prijavljivati korisnike i odgovarati na upite kupaca
-- Brisati svoje oglase
+### Seller
+Sellers can:
+- Register and manage their profile
+- Create and manage multiple advertisements with full car details
+- Review all offers for their advertisements and accept or reject them
+- Report users and respond to buyer inquiries
+- Delete their advertisements
 
-### Kupac
-Kupci mogu:
-- Registrirati svoj profil ili pregledavati oglase kao neregistrovani korisnici
-- Pratiti i spremati oglase koji ih interesuju
-- Slati ponude i upite prodavačima
-- Prijavljivati korisnike (prodavače)
+### Buyer
+Buyers can:
+- Register a profile or browse advertisements as guest users
+- Track and save advertisements of interest
+- Send offers and inquiries to sellers
+- Report sellers
 
-
-## Tehnologije
+## Technologies
 
 - **Backend:** Node.js, Express  
 - **Frontend:** EJS templating  
-- **Baza podataka:** PostgreSQL  
-- **Upload slika:** Supabase  
-- **Sigurnost:** bcrypt za hashiranje lozinki
+- **Database:** PostgreSQL  
+- **Image Upload:** Supabase  
+- **Security:** bcrypt for password hashing
 
-## Instalacija
+## Installation
 
-1. Kloniraj repozitorij: git clone <repo-url>
-2. Instaliraj zavisnosti: npm install
-3. Kreiraj .env fajl i dodaj:
-PORT=3001
-DATABASE_URL=postgres://<username>:<password>@localhost:5432/autoshop
-TOKEN_CODE=<jwt-secret>
-SUPABASE_URL=<your-supabase-url>
-SUPABASE_KEY=<your-supabase-key>
-4. Pokreni server: npm start
-5. Posjeti aplikaciju na: http://localhost:3001/autoshop.ba
+1. Clone the repository:
+   git clone <repo-url>
+2. Install dependencies:
+   npm install
+3. Create a .env file and add:
+   PORT=3001
+   DATABASE_URL=postgres://<username>:<password>@localhost:5432/autoshop
+   TOKEN_CODE=<jwt-secret>
+   SUPABASE_URL=<your-supabase-url>
+   SUPABASE_KEY=<your-supabase-key>
+4. Start the server:
+   npm start
+5. Open the application:
+   http://localhost:3001/autoshop.ba
 
-## Korištenje aplikacije
+## Application Usage:
+  
+  - Register as a buyer or seller to access all features.
+  - Administrators are added directly through the database.
+  - Sellers can create advertisements, manage offers, and handle reports.
+  - Buyers can browse, save advertisements, and send offers.
+  - Administrators can block users, delete or manage advertisements, and resolve reports.
 
-- Registruj se kao kupac ili prodavač da pristupiš svim funkcionalnostima.
-- Administratori se dodaju direktno u bazu podataka.
-- Prodavači mogu kreirati oglase, upravljati ponudama i prijavama.
-- Kupci mogu pregledavati, spremati oglase i slati ponude.
-- Administratori mogu blokirati korisnike, brisati i dodavati oglase i rješavati prijave.
-
-## Autor
+## Author
 
 Emir Babačić
+Faculty of Science - University of Sarajevo
 
 ## Licence
 
