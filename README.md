@@ -36,6 +36,7 @@ Buyers can:
 
 ## Project Structure
 
+```
 src/                             # Main application source code
 │
 ├── config/                      # Configuration files for external services and database
@@ -71,6 +72,8 @@ src/                             # Main application source code
 │   └── index.js                 # Shared helpers (validation, formatting, reusable helpers)
 │
 └── app.js                       # Application entry point (Express setup, middleware registration, route initialization)
+```
+
 
 ## API Endpoints
 
