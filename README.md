@@ -37,41 +37,78 @@ Buyers can:
 ## Project Structure
 
 ```
-src/                             # Main application source code
+AUTOSHOP.BA/
 │
-├── config/                      # Configuration files for external services and database
-│   ├── database.js              # PostgreSQL database connection and setup
-│   └── supabase.js              # Supabase configuration for image upload and storage
+├── backend/                             # Backend Node.js application
+│   ├── node_modules/                    # Backend dependencies
+│   ├── src/                             # Main backend source code
+│   │
+│   │   ├── config/                      # Configuration files for services and database
+│   │   │   ├── database.js              # PostgreSQL database connection
+│   │   │   └── supabase.js              # Supabase storage configuration
+│   │   │
+│   │   ├── controllers/                 # Business logic and request handlers
+│   │   │   ├── admin/
+│   │   │   │   └── index.js             # Admin features (user management, reports, ads control)
+│   │   │   ├── buyer/
+│   │   │   │   └── index.js             # Buyer features (offers, saved ads, inquiries)
+│   │   │   ├── seller/
+│   │   │   │   └── index.js             # Seller features (ads management, offers handling)
+│   │   │   └── index.js                 # Authentication logic (login & signup)
+│   │   │
+│   │   ├── middlewares/                 # Authentication, authorization and validation middlewares
+│   │   │   └── index.js
+│   │   │
+│   │   ├── repositories/                # Database query layer
+│   │   │   ├── admin/                   # Admin database queries
+│   │   │   ├── buyer/                   # Buyer database queries
+│   │   │   ├── seller/                  # Seller database queries
+│   │   │   └── index.js                 # Authentication related queries
+│   │   │
+│   │   ├── routes/                      # API route definitions
+│   │   │   ├── admin/                   # Admin endpoints
+│   │   │   ├── buyer/                   # Buyer endpoints
+│   │   │   ├── seller/                  # Seller endpoints
+│   │   │   ├── users/                   # Authentication endpoints
+│   │   │   └── index.js                 # Main router entry point
+│   │   │
+│   │   ├── utils/                       # Shared helper functions
+│   │   │   └── index.js
+│   │   │
+│   │   └── app.js                       # Express app initialization and configuration
+│   │
+│   ├── .env                             # Environment variables
+│   ├── .gitignore                       # Git ignore rules
+│   ├── eslint.config.mjs                # ESLint configuration
+│   ├── package.json                     # Backend dependencies and scripts
+│   └── package-lock.json
 │
-├── controllers/                 # Business logic and request handling layer
-│   ├── admin/                   
-│   │   └── index.js             # Administrator operations (user management, reports, ads control)
-│   ├── buyer/
-│   │   └── index.js             # Buyer functionalities (offers, favorites, inquiries)
-│   ├── seller/
-│   │   └── index.js             # Seller functionalities (ad management, offers handling)
-│   └── index.js                 # Authentication logic (login and signup)
+├── frontend/                            # EJS frontend templates
+│   ├── admin_ads.ejs                    # Admin advertisements overview page
+│   ├── admin_homepage.ejs               # Admin dashboard
+│   ├── admin_reports.ejs                # Admin reports management page
+│   ├── admin_users.ejs                  # Admin user management page
+│   │
+│   ├── buyer_all_ads_without_loging.ejs # Public ads browsing page
+│   ├── buyer_homepage.ejs               # Buyer dashboard
+│   ├── buyer_saved.ejs                  # Buyer saved advertisements
+│   ├── buyer_view_ad.ejs                # Buyer advertisement details page
+│   ├── buyer_welcome_page.ejs           # Buyer welcome page
+│   │
+│   ├── seller_create_ad.ejs             # Seller advertisement creation page
+│   ├── seller_homepage.ejs              # Seller dashboard
+│   ├── seller_my_adds.ejs               # Seller advertisements management page
+│   ├── seller_offers.ejs                # Seller offers management page
+│   │
+│   ├── homepage.ejs                     # Landing page
+│   ├── login.ejs                        # Login page
+│   ├── signup.ejs                       # Registration page
+│   │
+│   ├── node_modules/                    # Frontend dependencies
+│   ├── package.json                     # Frontend dependencies configuration
+│   └── package-lock.json
 │
-├── middlewares/                 # Reusable middleware functions
-│   └── index.js                 # Authentication, authorization, validation, and error handling
-│
-├── repositories/                # Database access and query logic layer
-│   ├── admin/                   # Database queries for administrator features
-│   ├── buyer/                   # Database queries for buyer features
-│   ├── seller/                  # Database queries for seller features
-│   └── index.js                 # Authentication related database operations
-│
-├── routes/                      # API route definitions and endpoint grouping
-│   ├── admin/                   # Administrator API routes
-│   ├── buyer/                   # Buyer API routes
-│   ├── seller/                  # Seller API routes
-│   ├── users/                   # Authentication and user-related routes
-│   └── index.js                 # Main router entry point
-│
-├── utils/                       # Helper and utility functions
-│   └── index.js                 # Shared helpers (validation, formatting, reusable helpers)
-│
-└── app.js                       # Application entry point (Express setup, middleware registration, route initialization)
+└── README.md
 ```
 
 
